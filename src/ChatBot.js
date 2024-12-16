@@ -275,7 +275,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
               console.log('(positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))', (positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7))));
               console.log('(positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))*5', (positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))*5);
 
-              list_csi_score.push((positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))*5);
+              list_csi_score.push((positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.6)))*5);
               //list_csi_score.push((positive-negative-(mixed*0.5)-(neutral*0.5))*5);
               //list_csi_score.push((positive-(negative-(mixed*0.5)-(neutral*0.7)))*5);
             });
