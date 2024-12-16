@@ -270,7 +270,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
               console.log('positive: ', positive, 'negetive: ', negative, 'mixed: ', mixed, 'neutral: ', neutral);
               console.log('(negative*-1)', (negative*-1));
               console.log('(mixed*-0.5)', (mixed*-0.5));
-              console.log('(neutral*-0.7)', (neutral*-0.7);
+              console.log('(neutral*-0.7)', (neutral*-0.7));
               console.log('(negative*-1)+(mixed*-0.5)+(neutral*-0.7)', (negative*-1)+(mixed*-0.5)+(neutral*-0.7));
               console.log('(positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))', (positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7))));
               console.log('(positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))*5', (positive+((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))*5);
