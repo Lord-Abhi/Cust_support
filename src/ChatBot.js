@@ -267,10 +267,11 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
               var negative = parseFloat(item["SentimentScore"]["Negative"]);
               var mixed = parseFloat(item["SentimentScore"]["Mixed"]);
               var neutral = parseFloat(item["SentimentScore"]["Neutral"]);
+              console.log('positive: ', positive, 'negetive: ', negative, 'mixed: ', mixed, 'neutral: ', neutral);
 
-              //list_csi_score.push((positive-((negative*-1)+(mixed*-0.5)+(neutral*-0.5)))*5);
+              list_csi_score.push((positive-((negative*-1)+(mixed*-0.5)+(neutral*-0.7)))*5);
               //list_csi_score.push((positive-negative-(mixed*0.5)-(neutral*0.5))*5);
-              list_csi_score.push((positive-(negative-(mixed*0.5)-(neutral*0.5)))*5);
+              //list_csi_score.push((positive-(negative-(mixed*0.5)-(neutral*0.7)))*5);
             });
 
             console.log("List CSI score: ",list_csi_score)
