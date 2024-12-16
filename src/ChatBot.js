@@ -29,65 +29,6 @@ Once the Control Panel is open, navigate to the "Programs and Features" section.
 In the repair window, select the "Quick Repair" option. This is a faster method that fixes most common issues without requiring an internet connection. Follow the on-screen instructions to complete the repair process.  
 
 After the repair is complete, restart your computer. This step is essential to ensure that all changes take effect. Once your computer has restarted, open your Microsoft Office programs to confirm they are working correctly. The repair process should resolve the issues and restore the performance of your Office applications.`
-// var pdf_content = `
-
-// Microsoft Teams Troubleshooting Guide
-
-// 1. Login Issues
-// Ensure Correct Credentials: Double-check your Microsoft account credentials (username and password).
-// Clear Cache and Cookies: If logging in via the web app, clear your browser's cache and cookies or try an incognito window.
-// Update the App: Make sure your Microsoft Teams app is up-to-date, as login issues can sometimes be due to outdated versions.
-// Check Connectivity: Ensure a stable internet connection. If you're using a VPN, try disconnecting it temporarily.
-// Reset Password: If you still can't log in, you may need to reset your Microsoft password or contact your IT administrator for assistance.
-
-// 2. Notifications Not Appearing in Activity
-// Review Notification Settings: Go to your profile picture in the upper-right corner > Settings > Notifications. Adjust settings for channels, messages, and mentions as needed.
-// Check Channel Notifications: For specific Teams channels, ensure notifications are enabled. Go to the channel > click the 'More options' (three dots) > Channel notifications.
-// Allow Notifications on Device Settings: For mobile app users, check that Teams notifications are allowed in your device’s notification settings.
-
-// 3. Chat or Message Delivery Delays
-// Check Internet Connection: A weak or unstable connection can delay message delivery.
-// Sign Out and Back In: This can refresh your connection to Teams and resolve delays.
-// Clear Teams Cache: For desktop, close Teams, navigate to %appdata%\Microsoft\Teams in File Explorer, and delete the Cache folder.
-// Update App: Ensure you are using the latest version of Microsoft Teams.
-
-// 4. Meeting Issues (Audio/Video Problems)
-// Test Device Settings: In Teams, go to Settings > Devices to test and select your preferred microphone, speakers, and camera.
-// Allow Permissions: Check your computer or browser permissions to ensure Teams can access your camera and microphone.
-// Use a Headset: Using a headset with a built-in microphone often improves audio quality.
-// Turn Off Background Apps: Close any other apps that may be using the microphone or camera.
-
-// 5. Screen Sharing Not Working
-// Check Permissions: If using the desktop app, ensure that screen-sharing permissions are allowed in your system settings (especially for macOS users).
-// Rejoin the Meeting: Leave and rejoin the meeting, as this can sometimes reset sharing capabilities.
-// Try Different Content Sharing Options: In the Teams meeting, choose between sharing a specific window, the full screen, or an individual app to see if one works over another.
-
-// 6. File Sharing or Document Collaboration Issues
-// Check File Permissions: Ensure you have permission to share or edit files in that specific Team or channel.
-// Sign Out and Back In: This can resolve access issues to shared files and sync problems.
-// Try a Different Browser: For browser users, try switching to Edge or Chrome for better compatibility with Office 365 integrations.
-// Ensure Files Are Synced in OneDrive: If files are stored in OneDrive, ensure they’re synced properly. Open OneDrive to verify.
-
-// 7. Calendar Not Syncing or Issues Scheduling Meetings
-// Check Outlook Integration: Ensure your Microsoft account is correctly synced with Outlook, as Teams relies on this for calendar integration.
-// Update Teams and Outlook: Make sure both applications are updated.
-// Re-authenticate Your Account: Sign out and sign back in to refresh the connection to your calendar.
-
-// 8. Integration Issues with Other Apps (e.g., Planner, Trello)
-// Check App Permissions: Ensure Microsoft Teams has permission to integrate with the app you are trying to use.
-// Update the Integrated App: Sometimes, the app itself needs updating for integrations to work smoothly.
-// Remove and Re-add the App: Go to the Apps tab in Teams, uninstall the app, and then reinstall it to reset the integration.
-
-// 9. Customizing Settings and Preferences Not Saving
-// Clear Cache: Cached data can sometimes interfere with saved settings. Clear Teams cache (see Step 3) and try again.
-// Reinstall Teams: If settings are still not saving, try uninstalling and reinstalling Teams.
-// Check for Admin Restrictions: Some settings might be restricted by your organization’s IT policies.
-
-// 10. Synchronization Across Devices Not Working
-// Verify Internet Connection on All Devices: A weak connection on one device may cause desynchronization.
-// Sign Out and Back In on All Devices: Log out of Teams on each device and log back in to resync data.
-// Update Teams on All Devices: Ensure all devices are using the latest version of Microsoft Teams.
-// `;
 
 const ChatBot = ({isVoiceTest, testAreaValue}) => {
   if(isVoiceTest){
@@ -102,7 +43,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   const [averageSentimentScore, setAverageSentimentScore] = useState([]);
   const [startTypeTime, setStartTypeTime] = useState('');
 
-  const [prompt, setPrompt] = useState(" Based on the content crate a simple outlook get stucked issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not as for assistance.");
+  const [prompt, setPrompt] = useState(" Based on the content create a simple outlook get stucked issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
 
   const changeOption = (event) => {
     //console.log(event.target.value)
