@@ -328,7 +328,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
         style={styles.input}
         value={input}
         onChange={(e) => setInput(e.target.value)}
-        placeholder={isVoiceTest}//"Type your message..."      
+        placeholder="Type your message..."      
       >{testAreaValue}</textarea>
       <button id='sent_btn' onClick={sendMessage} style={styles.sendButton}>Send</button>
       <button id='end_btn' onClick={calculateScore} style={styles.endButton} >End Chart</button>
