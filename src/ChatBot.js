@@ -332,7 +332,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
         placeholder="Type your message..."      
       >{testAreaValue}</textarea>
       <button id='sent_btn' onClick={sendMessage} style={styles.sendButton}>Send</button>
-      <button id='end_btn' onClick={calculateScore} style={styles.endButton} hidden>End Chart</button>
+      <button id='end_btn' onClick={calculateScore} style={styles.endButton} >End Chart</button>
       <div id='score_holder' hidden>
         <div><span>Average Handle Time: {AverageHandleTime}</span></div>
         <div><span>Average Response Time: {AverageResponseTime} secs.</span></div>
