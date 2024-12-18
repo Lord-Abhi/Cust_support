@@ -20,15 +20,13 @@ AWS.config.update({
 
 const comprehend = new AWS.Comprehend();
 
-var pdf_content = `If you are experiencing issues with Microsoft Office programs, such as Outlook getting stuck on the "Loading Profile" screen, Excel not responding, or Outlook freezing, these problems can often be resolved by repairing the Office suite. Follow these steps to repair Microsoft Office and restore its functionality.  
+var pdf_content = `Open a web browser (e.g., Chrome, Firefox, Safari) and visit the Gmail signup page: https://accounts.google.com/signup. Enter your first name and last name in the designated fields. Create a unique username, which will become your email address (e.g., yourname@gmail.com). If your preferred username is already taken, Gmail will suggest alternatives. Choose a strong password that combines uppercase and lowercase letters, numbers, and symbols for security, and confirm it by entering it again.
 
-First, ensure that all Microsoft Office applications, such as Word, Excel, or Outlook, are closed. Having these programs open during the repair process can interfere with the repair. Next, open the Control Panel. You can do this by pressing the Windows key and typing "Control Panel" in the search bar, then pressing Enter.  
+Click "Next" to proceed. Provide a valid phone number for account verification. Google will send a verification code via text or call. Enter the code in the provided field to verify your phone number. Optionally, add a recovery email address to help recover your account if you forget your password. Enter your date of birth and select your gender.
 
-Once the Control Panel is open, navigate to the "Programs and Features" section. In the list of installed programs, locate "Microsoft 365 Apps for Enterprise" or your version of Microsoft Office. Right-click on the program name and select "Change" from the context menu. This will open a new window with repair options.  
+Read through Google's Terms of Service and Privacy Policy, then click "I agree" to accept them. Once you've completed the steps, your Gmail account will be created. You can now log in to Gmail and start using your new email account.
 
-In the repair window, select the "Quick Repair" option. This is a faster method that fixes most common issues without requiring an internet connection. Follow the on-screen instructions to complete the repair process.  
-
-After the repair is complete, restart your computer. This step is essential to ensure that all changes take effect. Once your computer has restarted, open your Microsoft Office programs to confirm they are working correctly. The repair process should resolve the issues and restore the performance of your Office applications.`
+For easy access, download the Gmail app on your smartphone or tablet from the Google Play Store (for Android) or the App Store (for iOS). Log in using your new account credentials. You're all set to send, receive, and organize your emails with Gmail!`;
 
 const ChatBot = ({isVoiceTest, testAreaValue}) => {
   if(isVoiceTest){
@@ -43,9 +41,10 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   const [averageSentimentScore, setAverageSentimentScore] = useState([]);
   const [startTypeTime, setStartTypeTime] = useState('');
 
-  const [prompt, setPrompt] = useState(" Based on the content create a simple outlook get stucked issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
+  //const [prompt, setPrompt] = useState(" Based on the content create a simple outlook get stucked issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
   //const [prompt, setPrompt] = useState(" Based on the content create an issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. Provide only the customer’s responses, keeping them concise and do not offer assistance or solution from your side.");
-
+  const [prompt, setPrompt] = useState(" Based on the content, create a scenario like you are having difficulties creating a Gmail account and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, providing personal information if needed, not making the chat complicated, and closing the chat within a few steps. The issue must get solved once the Gmail account is successfully created. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
+  
   const changeOption = (event) => {
     //console.log(event.target.value)
     //setPrompt("just message");
