@@ -1,5 +1,5 @@
 // src/ChatBot.js
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
 import AWS from 'aws-sdk';
 
 const api_url = 'https://api.openai.com/v1/chat/completions';
@@ -20,13 +20,22 @@ AWS.config.update({
 
 const comprehend = new AWS.Comprehend();
 
+// var pdf_content = `If you are experiencing issues with Microsoft Office programs, such as Outlook getting stuck on the "Loading Profile" screen, Excel not responding, or Outlook freezing, these problems can often be resolved by repairing the Office suite. Follow these steps to repair Microsoft Office and restore its functionality.  
+
+// First, ensure that all Microsoft Office applications, such as Word, Excel, or Outlook, are closed. Having these programs open during the repair process can interfere with the repair. Next, open the Control Panel. You can do this by pressing the Windows key and typing "Control Panel" in the search bar, then pressing Enter.  
+
+// Once the Control Panel is open, navigate to the "Programs and Features" section. In the list of installed programs, locate "Microsoft 365 Apps for Enterprise" or your version of Microsoft Office. Right-click on the program name and select "Change" from the context menu. This will open a new window with repair options.  
+
+// In the repair window, select the "Quick Repair" option. This is a faster method that fixes most common issues without requiring an internet connection. Follow the on-screen instructions to complete the repair process.  
+
+// After the repair is complete, restart your computer. This step is essential to ensure that all changes take effect. Once your computer has restarted, open your Microsoft Office programs to confirm they are working correctly. The repair process should resolve the issues and restore the performance of your Office applications.`
 var pdf_content = `Open a web browser (e.g., Chrome, Firefox, Safari) and visit the Gmail signup page: https://accounts.google.com/signup. Enter your first name and last name in the designated fields. Create a unique username, which will become your email address (e.g., yourname@gmail.com). If your preferred username is already taken, Gmail will suggest alternatives. Choose a strong password that combines uppercase and lowercase letters, numbers, and symbols for security, and confirm it by entering it again.
 
 Click "Next" to proceed. Provide a valid phone number for account verification. Google will send a verification code via text or call. Enter the code in the provided field to verify your phone number. Optionally, add a recovery email address to help recover your account if you forget your password. Enter your date of birth and select your gender.
 
 Read through Google's Terms of Service and Privacy Policy, then click "I agree" to accept them. Once you've completed the steps, your Gmail account will be created. You can now log in to Gmail and start using your new email account.
 
-For easy access, download the Gmail app on your smartphone or tablet from the Google Play Store (for Android) or the App Store (for iOS). Log in using your new account credentials. You're all set to send, receive, and organize your emails with Gmail!`;
+For easy access, download the Gmail app on your smartphone or tablet from the Google Play Store (for Android) or the App Store (for iOS). Log in using your new account credentials. You're all set to send, receive, and organize your emails with Gmail!`
 
 const ChatBot = ({isVoiceTest, testAreaValue}) => {
   if(isVoiceTest){
@@ -40,11 +49,15 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   const [averageTypeSpeed, setAverageTypeSpeed] = useState([]);
   const [averageSentimentScore, setAverageSentimentScore] = useState([]);
   const [startTypeTime, setStartTypeTime] = useState('');
+  const [isTextAreaDisabled, setIsTextAreaDisabled] = useState(false);
+  const [isStartTypeing, setIsStartTypeing] = useState(false);
+  const msgDivRef = useRef(true);
+  const txtArea = useRef();
 
-  //const [prompt, setPrompt] = useState(" Based on the content create a simple outlook get stucked issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
+  // const [prompt, setPrompt] = useState(" Based on the content create a sce and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
   //const [prompt, setPrompt] = useState(" Based on the content create an issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. Provide only the customer’s responses, keeping them concise and do not offer assistance or solution from your side.");
-  const [prompt, setPrompt] = useState(" Based on the content, inquire about how to create a Gmail account and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, providing personal information if needed, not making the chat complicated, and closing it once the Gmail account is created. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
-  
+  const [prompt, setPrompt] = useState(" Based on the content, create a scenario like you are having difficulties creating a Gmail account and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, providing personal information if needed, not making the chat complicated, and closing the chat within a few steps. The issue must get solved once the Gmail account is successfully created. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
+
   const changeOption = (event) => {
     //console.log(event.target.value)
     //setPrompt("just message");
@@ -102,86 +115,97 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   }
 
   const sendMessage = async () => {
-    //calculate the typing speed per second for each user response
-    if(startTypeTime!=''){
-      let current_time = new Date();
-      //console.log('current time: ', current_time, "start time:", startTypeTime)
-      let time_diff = current_time - startTypeTime;
-      //console.log('time diffrence: ', time_diff, "in min: ",(time_diff/60000));
-      let word_count = input.trim().split(' ').length;
-      //console.log('word_count: ', word_count)
-      let words_per_sec = (word_count/(time_diff/60000)).toFixed(1);
-      //console.log('words_per_sec: ', words_per_sec)
-      setTypeSpeed((oldRec)=>[...oldRec, words_per_sec])
-    }    
-    
-    const sysMessage = { role: 'system', content: pdf_content + prompt};
-    //console.log("is_closing: ", is_closing);
-    
-    //console.log("message length: ",messages.length)
-    let userMessage = {};
-    if(messages.length==0){
-      userMessage = { role: 'user', content: "How can I help you?", timestamp:Date.now() };
-    }else{
-      if (input.trim() === '') return;
+    setIsTextAreaDisabled(true);
+    if(input.trim()!="" || initial_execution){
+      let textAreaInput = input;
+      setInput(''); 
+      //calculate the typing speed per second for each user response
+      if(startTypeTime!=''){
+        let current_time = new Date();
+        //console.log('current time: ', current_time, "start time:", startTypeTime)
+        let time_diff = current_time - startTypeTime;
+        console.log('time diffrence: ', time_diff, 'in secs: ',time_diff/1000, "in min: ",(time_diff/60000));
+        let word_count = input.trim().split(' ').length;
+        //console.log('word_count: ', word_count)
+        let words_per_sec = (word_count/(time_diff/60000)).toFixed(1);
+        //console.log('words_per_sec: ', words_per_sec)
+        setTypeSpeed((oldRec)=>[...oldRec, words_per_sec])
+      }    
 
-      if(messages.length > 0){
-        var closure_resonse = ""+await checkForClosure()
-        //console.log('closure_resonse: ', closure_resonse);
-        if(closure_resonse.replace('.','').toLowerCase() == 'yes'){
-          //console.log('inside if');
-          is_closing = true;
+      const sysMessage = { role: 'system', content: pdf_content + prompt};
+      //console.log("is_closing: ", is_closing);
+
+      //console.log("message length: ",messages.length)
+      let userMessage = {};
+      if(messages.length==0){
+        userMessage = { role: 'user', content: "How can I help you?", timestamp:Date.now() };
+      }else{
+        if (textAreaInput.trim() === '') return;
+
+        if(messages.length > 0){
+          var closure_resonse = ""+await checkForClosure()
+          //console.log('closure_resonse: ', closure_resonse);
+          if(closure_resonse.replace('.','').toLowerCase() == 'yes'){
+            //console.log('inside if');
+            is_closing = true;
+          }
         }
-      }
-      
-      userMessage = { role: 'user', content: input, timestamp:Date.now() };
-      setMessages([...messages, userMessage]);
-    }
-    
-    //console.log("messages before open ai call: ", messages)
-    try {
-      // Use the fetch API to send a request to OpenAI
-      const response = await fetch(api_url, {
-        method: api_method,
-        headers: {'Content-Type': api_content_type, Authorization: api_auth_key,},
-        body: JSON.stringify({
-          model: api_model,
-          messages: [...messages, sysMessage, userMessage],
-        }),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        // Add the bot's response to the chat
-        const botMessage = {role: 'assistant', content: data.choices[0].message.content, timestamp: Date.now()};
-        setMessages((prevMessages) => [...prevMessages, botMessage]);
-        setStartTypeTime(new Date());
-        //console.log('startTypeTime: ',startTypeTime)
-        //console.log("messages after open ai call: ", messages)
-        //console.log('end button display status: ', window.getComputedStyle(document.getElementById('end_btn')).display);
-        if(is_closing && window.getComputedStyle(document.getElementById('end_btn')).display === 'none'){
-          //console.log('is_closing else:', is_closing)
-          document.getElementById('sent_btn').style.display = 'none'
-          document.getElementById('end_btn').style.display = 'block'
-        }
-      } else {
-        console.error('Error:', data);
+        
+        userMessage = { role: 'user', content: textAreaInput, timestamp:Date.now() };
+        setMessages([...messages, userMessage]);
       }
 
-    } catch (error) {
-      console.error('Error communicating with OpenAI API:', error);
-    }
+      //console.log("messages before open ai call: ", messages)
+      setTimeout(async () => {
+        try {
+          // Use the fetch API to send a request to OpenAI
+          const response = await fetch(api_url, {
+            method: api_method,
+            headers: {'Content-Type': api_content_type, Authorization: api_auth_key,},
+            body: JSON.stringify({
+              model: api_model,
+              messages: [...messages, sysMessage, userMessage],
+            }),
+          });
 
-    // Clear input field
-    setInput(''); 
+          const data = await response.json();
+
+          if (response.ok) {
+            // Add the bot's response to the chat
+            const botMessage = {role: 'assistant', content: data.choices[0].message.content, timestamp: Date.now()};
+            setMessages((prevMessages) => [...prevMessages, botMessage]);
+            
+            //console.log('startTypeTime: ',startTypeTime)
+            //console.log("messages after open ai call: ", messages)
+            //console.log('end button display status: ', window.getComputedStyle(document.getElementById('end_btn')).display);
+            if(is_closing && window.getComputedStyle(document.getElementById('end_btn')).display === 'none'){
+              //console.log('is_closing else:', is_closing)
+              document.getElementById('sent_btn').style.display = 'none'
+              document.getElementById('end_btn').style.display = 'block'
+            }
+            setIsTextAreaDisabled(false);
+            setIsStartTypeing(false);
+          } else {
+            console.error('Error:', data);
+          }
+          
+        } catch (error) {
+          console.error('Error communicating with OpenAI API:', error);
+        }
+      }, 1000);
+    }
+    else{
+      setInput(''); 
+      setIsTextAreaDisabled(false);
+    }
+    initial_execution = false;   
   };
 
   const calculateScore = async() => {
     //console.log('calculate score');
     sendMessage();
     document.getElementById('sent_btn').style.display = "none";
-    document.getElementById('txt_msg').style.display = "none";
+    txtArea.current.style.display = "none";
     document.getElementById('end_btn').style.display = "none";
     const chat_start_time = new Date(messages[0]['timestamp']);
 
@@ -297,13 +321,15 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   };
 
   useEffect(()=>{
-    //console.log('initial execution: ', initial_execution)
+    if(!txtArea.current.disabled)
+      txtArea.current.focus();
+
+    if(msgDivRef.current){
+      msgDivRef.current.scrollTop = msgDivRef.current.scrollHeight;
+    } 
     if(initial_execution){
-      sendMessage();
-      initial_execution = false
-    }  
-    // var message_box = document.getElementById('messge_box');
-    // message_box.scrollTop = message_box.scrollHeight;
+      sendMessage();      
+    } 
   });
 
   return (
@@ -316,9 +342,9 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
         <option value='priceConsious'>Price-Conscious Customer</option>
         <option value='escalationProne'>Escalation-Prone Customer</option>
       </select> */}
-      <div style={styles.chatBox}>
+      <div ref={msgDivRef} onInput={(e)=>console.log(e)} style={styles.chatBox}>
         {messages.map((msg, index) => (
-          <div
+          <div               
             id='messge_box'
             key={index}
             style={{
@@ -326,6 +352,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
               alignSelf: msg.role === 'user' ? 'flex-end' : 'flex-start',
               backgroundColor: msg.role === 'user' ? '#DCF8C6' : '#FFF',
             }}
+            
           >
             {msg.content}
           </div>
@@ -333,10 +360,23 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
       </div>
       <textarea
         id='txt_msg'
+        ref={txtArea}
+        disabled={isTextAreaDisabled}
         style={styles.input}
         value={input}
-        onChange={(e) => setInput(e.target.value)}
-        placeholder="Type your message..."      
+        onChange={(e) => {
+          setInput(e.target.value);       
+        }}
+        placeholder="Type your message..."   
+        onKeyDown={(e) => {
+          if(e.key==='Enter'){
+            document.getElementById('sent_btn').click();            
+          } 
+          if(!isStartTypeing){
+            setStartTypeTime(new Date());
+            setIsStartTypeing(true);
+          }          
+        }}
       >{testAreaValue}</textarea>
       <button id='sent_btn' onClick={sendMessage} style={styles.sendButton}>Send</button>
       <button id='end_btn' onClick={calculateScore} style={styles.endButton} >End Chart</button>
