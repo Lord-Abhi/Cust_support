@@ -126,7 +126,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
         let time_diff = current_time - startTypeTime;
         console.log('time diffrence: ', time_diff, 'in secs: ',time_diff/1000, "in min: ",(time_diff/60000));
         let word_count = input.trim().split(' ').length;
-        //console.log('word_count: ', word_count)
+        console.log('word_count: ', word_count)
         let words_per_sec = (word_count/(time_diff/60000)).toFixed(1);
         //console.log('words_per_sec: ', words_per_sec)
         setTypeSpeed((oldRec)=>[...oldRec, words_per_sec])
