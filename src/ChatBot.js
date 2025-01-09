@@ -29,13 +29,13 @@ const comprehend = new AWS.Comprehend();
 // In the repair window, select the "Quick Repair" option. This is a faster method that fixes most common issues without requiring an internet connection. Follow the on-screen instructions to complete the repair process.  
 
 // After the repair is complete, restart your computer. This step is essential to ensure that all changes take effect. Once your computer has restarted, open your Microsoft Office programs to confirm they are working correctly. The repair process should resolve the issues and restore the performance of your Office applications.`
-var pdf_content = `Open a web browser (e.g., Chrome, Firefox, Safari) and visit the Gmail signup page: https://accounts.google.com/signup. Enter your first name and last name in the designated fields. Create a unique username, which will become your email address (e.g., yourname@gmail.com). If your preferred username is already taken, Gmail will suggest alternatives. Choose a strong password that combines uppercase and lowercase letters, numbers, and symbols for security, and confirm it by entering it again.
+var pdf_content = `Content:"Open a web browser (e.g., Chrome, Firefox, Safari) and visit the Gmail signup page: https://accounts.google.com/signup. Enter your first name and last name in the designated fields. Create a unique username, which will become your email address (e.g., yourname@gmail.com). If your preferred username is already taken, Gmail will suggest alternatives. Choose a strong password that combines uppercase and lowercase letters, numbers, and symbols for security, and confirm it by entering it again.
 
 Click "Next" to proceed. Provide a valid phone number for account verification. Google will send a verification code via text or call. Enter the code in the provided field to verify your phone number. Optionally, add a recovery email address to help recover your account if you forget your password. Enter your date of birth and select your gender.
 
 Read through Google's Terms of Service and Privacy Policy, then click "I agree" to accept them. Once you've completed the steps, your Gmail account will be created. You can now log in to Gmail and start using your new email account.
 
-For easy access, download the Gmail app on your smartphone or tablet from the Google Play Store (for Android) or the App Store (for iOS). Log in using your new account credentials. You're all set to send, receive, and organize your emails with Gmail!`
+For easy access, download the Gmail app on your smartphone or tablet from the Google Play Store (for Android) or the App Store (for iOS). Log in using your new account credentials. You're all set to send, receive, and organize your emails with Gmail!"`
 
 const ChatBot = ({isVoiceTest, testAreaValue}) => {
   if(isVoiceTest){
@@ -55,35 +55,48 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   const txtArea = useRef();
 
   // const [prompt, setPrompt] = useState(" Based on the content create a sce and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
-  //const [prompt, setPrompt] = useState(" Based on the content create an issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. Provide only the customer’s responses, keeping them concise and do not offer assistance or solution from your side.");
-  const [prompt, setPrompt] = useState(" Based on the content, create a scenario like you are having difficulties creating a Gmail account and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, providing personal information if needed, not making the chat complicated, and closing the chat within a few steps. The issue must get solved once the Gmail account is successfully created. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
+  // const [prompt, setPrompt] = useState(" Based on the content create an issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. Provide only the customer’s responses, keeping them concise and do not offer assistance or solution from your side.");
+  const [prompt, setPrompt] = useState(` 
+    Based on the content simulate a scenario where I (the user) am the service representative assisting you (the AI) in creating a Gmail account. 
+    Based on the content never provide any solutions, instructions or any kind of assistance from your side. 
+    You will act as the assertive customer experiencing difficulties. 
+    Respond step-by-step only to the specific instructions or questions I provide, keeping your responses concise and confident.
+    Share necessary personal information when prompted, instructions, or actions from your side. 
+    Do not complicate the conversation or offer unnecessary explanations. 
+    Do not respond proactively to generic inputs like 
+    'ok', 'Got it!', 'Makes sense', 'I see', 'Understood', 'Interesting', 'Alright', 'Noted', 'Thanks for sharing', 'sure', etc; 
+    instead, rephrase the last question from your side.
+    Based of the user's response, in case of repeted question increase your level of frustation in chat. 
+    Ensure the issue is resolved efficiently, and close the conversation once the Gmail account is successfully created.`);
 
-  const changeOption = (event) => {
-    //console.log(event.target.value)
-    //setPrompt("just message");
-    switch(event.target.value){
-      case 'angry':
-        setPrompt(" Based on the content simulate a call with an angry customer expressing direct frustration about a product and the service experience. The customer should be assertive and clearly unhappy with both the product's performance and the difficulty in receiving help. The call should lead to a resolution, ending on a positive note. Provide only the customer’s responses, keeping them concise. dont't make conversation lengthy.")
-        break;
-      case 'confused':
-        setPrompt(" Based on the content simulate a call with a confused customer who is unsure about how to use the product and feels uncertain about the guidance they've received so far. The customer should express hesitation, ask multiple questions, and need reassurance. The call should lead to a clear understanding and a confident, positive conclusion. Provide only the customer’s responses, keeping them brief.");
-        break;
-      case 'silent':
-        setPrompt(" Based on the content simulate a call with a silent or reserved customer who is dissatisfied with a product and the service experience. The customer should be reluctant to share details, giving brief and minimal responses that indicate frustration with both the product's performance and the lack of support. The conversation should gradually lead to a resolution, ending on a positive note. Provide only the customer’s responses, keeping them brief.")
-        break;
-      case 'assertive':
-        //setPrompt(" Based on the content crate a simple password expire case and simulate a call with a knowledgeable and assertive customer who expresses clear dissatisfaction with the product’s performance and challenges in obtaining support. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed and keep the chat short. The chat should progress toward a satisfactory resolution after reciving the temp password and conclude positively and close the chat. Provide only the customer’s responses, keeping them concise.")
-        setPrompt(" Based on the content crate a simple password expire case and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The chat should progress toward a satisfactory resolution after reciving the temp password. Provide only the customer’s responses, keeping them concise.")
-        break;
-      case 'priceConsious':
-        setPrompt(" Based on the content simulate a call with a price-conscious customer who is frustrated about the product’s value for money and the lack of satisfactory service. The customer should be assertive, expressing disappointment over the product’s cost and asking about discounts or compensation. The call should conclude with a resolution that addresses their concerns and offers them a sense of value. Provide only the customer’s responses, keeping them brief and direct.")
-        break;
-      case 'escalationProne':
-        setPrompt(" Based on the content simulate a call with an escalation-prone customer who is clearly dissatisfied with the product and service experience. The customer should be assertive, quickly requesting to speak to a supervisor due to frustration with the product's performance and previous support attempts. The conversation should eventually lead to a resolution, ending on a positive note. Provide only the customer’s responses, keeping them concise.")
-        break;
-    }
-    setMessages([]);
-  };
+  // const changeOption = (event) => {
+  //   //console.log(event.target.value)
+  //   //setPrompt("just message");
+  //   switch(event.target.value){
+  //     case 'angry':
+  //       setPrompt(" Based on the content simulate a call with an angry customer expressing direct frustration about a product and the service experience. The customer should be assertive and clearly unhappy with both the product's performance and the difficulty in receiving help. The call should lead to a resolution, ending on a positive note. Provide only the customer’s responses, keeping them concise. dont't make conversation lengthy.")
+  //       break;
+  //     case 'confused':
+  //       setPrompt(" Based on the content simulate a call with a confused customer who is unsure about how to use the product and feels uncertain about the guidance they've received so far. The customer should express hesitation, ask multiple questions, and need reassurance. The call should lead to a clear understanding and a confident, positive conclusion. Provide only the customer’s responses, keeping them brief.");
+  //       break;
+  //     case 'silent':
+  //       setPrompt(" Based on the content simulate a call with a silent or reserved customer who is dissatisfied with a product and the service experience. The customer should be reluctant to share details, giving brief and minimal responses that indicate frustration with both the product's performance and the lack of support. The conversation should gradually lead to a resolution, ending on a positive note. Provide only the customer’s responses, keeping them brief.")
+  //       break;
+  //     case 'assertive':
+  //       //setPrompt(" Based on the content crate a simple password expire case and simulate a call with a knowledgeable and assertive customer who expresses clear dissatisfaction with the product’s performance and challenges in obtaining support. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed and keep the chat short. The chat should progress toward a satisfactory resolution after reciving the temp password and conclude positively and close the chat. Provide only the customer’s responses, keeping them concise.")
+  //       //  setPrompt(" Based on the content create a simple password expire case and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers step by step, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The chat should progress toward a satisfactory resolution after reciving the temp password. Provide only the customer’s responses, keeping them concise.")
+  //         setPrompt(" Based on the content create a simple password expire case and simulate a step-by-step call with a knowledgeable and assertive customer who can ask step by step solution to the . The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers step by step, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The chat should progress toward a satisfactory resolution after reciving the temp password. Provide only the customer’s responses, keeping them concise.")
+  //       //setPrompt(' Create a step-by-step password expiration scenario where the OpenAI model responds to each step individually. Simulate a chat with a confident, direct, and detail-oriented customer. The customer expects quick and accurate answers, provides personal details if needed, and focuses on resolving the issue efficiently. Only provide the customer’s concise replies in each step.')
+  //       break;
+  //     case 'priceConsious':
+  //       setPrompt(" Based on the content simulate a call with a price-conscious customer who is frustrated about the product’s value for money and the lack of satisfactory service. The customer should be assertive, expressing disappointment over the product’s cost and asking about discounts or compensation. The call should conclude with a resolution that addresses their concerns and offers them a sense of value. Provide only the customer’s responses, keeping them brief and direct.")
+  //       break;
+  //     case 'escalationProne':
+  //       setPrompt(" Based on the content simulate a call with an escalation-prone customer who is clearly dissatisfied with the product and service experience. The customer should be assertive, quickly requesting to speak to a supervisor due to frustration with the product's performance and previous support attempts. The conversation should eventually lead to a resolution, ending on a positive note. Provide only the customer’s responses, keeping them concise.")
+  //       break;
+  //   }
+  //   setMessages([]);
+  // };
 
   const checkForClosure = async () =>{
     const userMessage = { role: 'system', content: "Did this chat reached to a conclusion or resolution state? Respond only in Yes/No." };
@@ -126,7 +139,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
         let time_diff = current_time - startTypeTime;
         console.log('time diffrence: ', time_diff, 'in secs: ',time_diff/1000, "in min: ",(time_diff/60000));
         let word_count = input.trim().split(' ').length;
-        console.log('word_count: ', word_count)
+        //console.log('word_count: ', word_count)
         let words_per_sec = (word_count/(time_diff/60000)).toFixed(1);
         //console.log('words_per_sec: ', words_per_sec)
         setTypeSpeed((oldRec)=>[...oldRec, words_per_sec])
@@ -155,7 +168,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
         setMessages([...messages, userMessage]);
       }
 
-      //console.log("messages before open ai call: ", messages)
+      //console.log("messages before open ai call: ", [...messages, sysMessage, userMessage])
       setTimeout(async () => {
         try {
           // Use the fetch API to send a request to OpenAI
@@ -164,7 +177,7 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
             headers: {'Content-Type': api_content_type, Authorization: api_auth_key,},
             body: JSON.stringify({
               model: api_model,
-              messages: [...messages, sysMessage, userMessage],
+              messages: [sysMessage, ...messages, userMessage],
             }),
           });
 
