@@ -29,13 +29,54 @@ const comprehend = new AWS.Comprehend();
 // In the repair window, select the "Quick Repair" option. This is a faster method that fixes most common issues without requiring an internet connection. Follow the on-screen instructions to complete the repair process.  
 
 // After the repair is complete, restart your computer. This step is essential to ensure that all changes take effect. Once your computer has restarted, open your Microsoft Office programs to confirm they are working correctly. The repair process should resolve the issues and restore the performance of your Office applications.`
-var pdf_content = `Content:"Open a web browser (e.g., Chrome, Firefox, Safari) and visit the Gmail signup page: https://accounts.google.com/signup. Enter your first name and last name in the designated fields. Create a unique username, which will become your email address (e.g., yourname@gmail.com). If your preferred username is already taken, Gmail will suggest alternatives. Choose a strong password that combines uppercase and lowercase letters, numbers, and symbols for security, and confirm it by entering it again.
+
+//Troubleshooting steps for Gmail
+var pdf_content = `Content:"Open a web browser (e.g., Chrome, Firefox, Safari) and visit the Gmail signup page: https://accounts.google.co.in/. Enter your first name and last name in the designated fields. Create a unique username, which will become your email address (e.g., yourname@gmail.com). If your preferred username is already taken, Gmail will suggest alternatives. Choose a strong password that combines uppercase and lowercase letters, numbers, and symbols for security, and confirm it by entering it again.
 
 Click "Next" to proceed. Provide a valid phone number for account verification. Google will send a verification code via text or call. Enter the code in the provided field to verify your phone number. Optionally, add a recovery email address to help recover your account if you forget your password. Enter your date of birth and select your gender.
 
 Read through Google's Terms of Service and Privacy Policy, then click "I agree" to accept them. Once you've completed the steps, your Gmail account will be created. You can now log in to Gmail and start using your new email account.
 
 For easy access, download the Gmail app on your smartphone or tablet from the Google Play Store (for Android) or the App Store (for iOS). Log in using your new account credentials. You're all set to send, receive, and organize your emails with Gmail!"`
+
+//Troubleshooting stps for MS Office
+// var pdf_content =`
+// Restart your computer and reopen the application.
+// Check for updates for Microsoft Office in the app settings or Microsoft Store.
+// Disable add-ins by going to File > Options > Add-ins, and manage them by disabling one at a time to isolate the issue.
+// Repair Microsoft Office through Control Panel > Programs > Modify > Repair.
+// Ensure your Office subscription is active by signing in and verifying your account at office.com.
+// Check system compatibility with the version of Office you’re using.
+// Scan for malware or viruses using Windows Security or third-party antivirus software.
+// Update Windows to the latest version to ensure compatibility with Office.
+// Reset the app by going to Settings > Apps > Microsoft Office > Advanced Options > Reset.
+// Uninstall and reinstall Microsoft Office if the issue persists, ensuring you back up important files.
+// `
+
+// //Steps installing Microsoft office
+//   var pdf_content = `
+//   Check system requirements to make sure your PC can run Microsoft Office.
+
+//   Go to https://www.office.com and sign in with the Microsoft account you used to purchase Office. If you don’t have an account, create one.
+
+//   After signing in, click on "Install Office" or "Install Apps" on the home page, then select "Office 365 apps" or the version of Office you purchased.
+
+//   The setup file will begin downloading. Save it to an easily accessible location on your computer.
+
+//   Open the downloaded file and follow the on-screen instructions. The installer will download and install the Office apps automatically. Ensure you have a stable internet connection.
+//   `;
+
+// Step to create a facebook account
+  // var pdf_content=`
+  // To open a Facebook account, go to www.facebook.com in your browser. 
+  // Fill in the sign-up form by entering your first and last name, mobile number or email address, a password, your date of birth, and gender. 
+  // Click on "Sign Up" to proceed.
+
+  // If you used an email, check your inbox for a verification link and click it to confirm your account. 
+  // If you provided a phone number, you’ll receive a code via SMS. Enter this code on Facebook to verify your account. 
+  // Once verified, you can set up your profile by adding a profile picture and filling in other details like your work or education. 
+  // You can then start adding friends and using Facebook to share updates, photos, and more.
+  // `
 
 const ChatBot = ({isVoiceTest, testAreaValue}) => {
   if(isVoiceTest){
@@ -54,8 +95,6 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
   const msgDivRef = useRef(true);
   const txtArea = useRef();
 
-  // const [prompt, setPrompt] = useState(" Based on the content create a sce and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. The issue must get solved once the computer is gone through quick repair, restarted and reopened outlook. Provide only the customer’s responses, keeping them concise and do not offer assistance from your side.");
-  // const [prompt, setPrompt] = useState(" Based on the content create an issue and simulate a call with a knowledgeable and assertive customer. The customer should be confident, direct, and detail-oriented, expecting quick and accurate answers, provide personal information if needed, do not make the chat complicate and close the chat within few steps. Provide only the customer’s responses, keeping them concise and do not offer assistance or solution from your side.");
   const [prompt, setPrompt] = useState(` 
     Scenario:
     I (the user) will act as a service representative assisting you (the AI) in creating your Gmail account.
@@ -85,6 +124,37 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
     7. Conclude the conversation efficiently:
     Once the Gmail account is successfully created, the AI should ensure the issue is resolved and then close the conversation.
     `);
+
+  // const [prompt, setPrompt] = useState(` 
+  //   Scenario:
+  //   I (the user) will act as a service representative assisting you (the AI) in resolving your issue. Create a simple issue strictly based on the content.
+
+  //   Instructions for the AI:
+
+  //   1. Refrain from generic responses:
+  //   Do not respond to the generic phrases like "ok," "sure," "got it," "makes sense," "I see," "understood," "interesting," "alright," "noted," or "thanks for sharing." Instead, rephrase the last question from the service representative's side.
+
+  //   2. Do not assist with solutions:
+  //   Avoid offering any solutions, instructions, or assistance related to the content on your side.
+  //   Focus on the specific actions and instructions given by the service representative.
+  //   Do not respond to those question whose answer or solution is related or based on the content.
+
+  //   3. Increase frustration with repeated questions:
+  //   If the service representative repeats a question, the AI should respond with increasing frustration while maintaining a confident tone.
+
+  //   4. Act as an assertive customer:
+  //   The AI should simulate an assertive customer who is having difficulty, keeping responses concise and direct.
+
+  //   5. Share necessary personal information:
+  //   Provide any necessary personal information when prompted by the service representative. Ensure you give the correct instructions or actions when required.
+
+  //   6. Avoid unnecessary explanations:
+  //   Keep responses focused on what’s needed, without adding excessive details or explanations.
+
+  //   7. Conclude the conversation efficiently:
+  //   If the provided solution matches the solution provided in the content 
+  //   Once the current/initial issue is fixed, the AI should ensure the issue is resolved and then close the conversation.
+  //   `);
 
   // const changeOption = (event) => {
   //   //console.log(event.target.value)
@@ -408,8 +478,10 @@ const ChatBot = ({isVoiceTest, testAreaValue}) => {
           }          
         }}
       >{testAreaValue}</textarea>
-      <button id='sent_btn' onClick={sendMessage} style={styles.sendButton}>Send</button>
-      <button id='end_btn' onClick={calculateScore} style={styles.endButton} >End Chart</button>
+      <div>
+        <button id='end_btn' onClick={calculateScore} style={styles.endButton} >End Chart</button>
+        <button id='sent_btn' onClick={sendMessage} style={styles.sendButton}>Send</button>
+      </div>      
       <div id='score_holder' hidden>
         <div><span>Average Handle Time: {AverageHandleTime}</span></div>
         <div><span>Average Response Time: {AverageResponseTime} secs.</span></div>
@@ -425,9 +497,9 @@ const styles = {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    width: '450px',
-    height: '600px',
-    margin: '0 auto',
+    width: '600px',
+    height: '560px',
+    margin: '66px auto',
     border: '1px solid #ddd',
     borderRadius: '8px',
     padding: '20px',
@@ -458,22 +530,27 @@ const styles = {
     borderRadius: '8px',
   },
   sendButton: {
+    width: '150px',
+    height: '40px',
     padding: '10px 20px',
     marginTop: '10px',
-    backgroundColor: '#007bff',
+    backgroundColor: '#5F249F',
     color: '#fff',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: '10px',
     cursor: 'pointer',
   },
   endButton: {
+    width: '150px',
+    height: '40px',
     padding: '10px 20px',
     marginTop: '10px',
-    backgroundColor: '#FF0000',
+    backgroundColor: '#63666A',
     color: '#fff',
     border: 'none',
-    borderRadius: '8px',
+    borderRadius: '10px',
     cursor: 'pointer',
+    marginRight: '10px',
   },
   dropDown: {
     padding: '10px 20px',
